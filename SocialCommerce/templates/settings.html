@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+{% block title %}{{ template_title }}{% endblock %}
+{% load static from staticfiles %}
+{% load humanize %}
+{% block content %}
+    <h1>{{ template_title }}</h1>
+<div class="panel panel-default text-center" style="width:25%;">
+    <form action="/settings/" method="post">{% csrf_token %}
+    <div class="panel-body">
+        {% for field in form %}
+            <div class="fieldWrapper">
+            {% if field.name != 'privacy' %}
+                {{ field }} {% for error in field.errors %}<error>{{ error|escape }}</error> {% endfor %}
+            {% else%}
+                {% for radio in field %}
+                    {% if radio.choice_label == 'Private' %}
+                        {{ radio }} <i class="fa fa-fw fa-lock"></i>
+                    {% else %}
+                        {{ radio }}<i class="fa fa-fw fa-unlock"></i>
+                    {% endif %}
+                {% endfor %}
+            {% endif %}
+            </div>
+        {% endfor %}
+        </br>
+        <input type="submit" class="btn btn-primary" id="submit" value="Submit">
+        <input type="reset" class="btn btn-danger" id="reset" value="Reset">
+        </br>
+        {% if updated != None %}
+            <success>{{ updated }}</success>
+        {% endif %}
+    </div>
+    </form>
+<div>
+{% endblock %}

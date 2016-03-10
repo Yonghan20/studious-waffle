@@ -1,0 +1,73 @@
+        <div class="cover profile">
+            <div class="wrapper">
+                <div class="image">
+                    <img src="{% static "images/profile-cover.jpg"%}" alt="people" />
+                </div>
+                <ul class="friends">
+                    <li>
+                        <a href="#">
+                            <img src="{% static "images/people/110/guy-6.jpg"%}"  alt="people" class="img-responsive">
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#">
+                            <img src="{% static "images/people/110/woman-3.jpg"%}"  alt="people" class="img-responsive">
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#">
+                            <img src="{% static "images/people/110/guy-2.jpg"%}"  alt="people" class="img-responsive">
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#">
+                            <img src="{% static "images/people/110/guy-9.jpg"%}"  alt="people" class="img-responsive">
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#">
+                            <img src="{% static "images/people/110/woman-9.jpg"%}"  alt="people" class="img-responsive">
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#">
+                            <img src="{% static "images/people/110/guy-4.jpg"%}"  alt="people" class="img-responsive">
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#">
+                            <img src="{% static "images/people/110/guy-1.jpg"%}"  alt="people" class="img-responsive">
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#">
+                            <img src="{% static "images/people/110/woman-4.jpg"%}"  alt="people" class="img-responsive">
+                        </a>
+                    </li>
+                    <li><a href="#" class="group"><i class="fa fa-group"></i></a>
+                    </li>
+                </ul>
+            </div>
+            <div class="cover-info">
+                <div class="avatar">
+                    <img src="{% static user.profile_image%}"  alt="people" />
+                </div>
+                <div class="name">
+                    <a href="#">
+            {{ user.display_name }}
+        </a>
+                </div>
+                <ul class="cover-nav">
+                    <li class="active"><a href="index.html"><i class="fa fa-fw icon-ship-wheel"></i> Timeline</a>
+                    </li>
+                    <li><a href="/messages/"><i class="fa fa-fw icon-user-1"></i> About</a>
+                    </li>
+                    <li><a href="/following/" title="following">
+                        <i class="fa fa-fw fa-users"></i> {{ user.following|length }} Following</a>
+                    </li>
+                    <li><a href="/followers" title="followers">
+                        <i class="fa fa-fw fa-users"></i> {{ user.followers|length }} Followers</a>
+                    </li>
+                </ul>
+            </div>
+        </div>

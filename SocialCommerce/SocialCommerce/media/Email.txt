@@ -1,0 +1,6 @@
+{{title}}
+
+Please click the link below to verify your account:
+{{activation_link}}{{activation_key}} 
+
+Email sent datetime : {{current_datetime}}

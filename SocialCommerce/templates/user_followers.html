@@ -1,0 +1,79 @@
+    {% extends "base.html" %}
+    {% block title %}{{ template_title }}{% endblock %}
+    {% load static from staticfiles %}
+    {% block content %}
+        <div class="container-fluid">
+        <h3>{{ template_title }}</h3>
+        <form id="myForm" action="" method="post">{% csrf_token %}
+            <div class="timeline" data-toggle="gridalicious">
+                {% for item in user_pagination   %}
+                    <div class="timeline-block">
+                        <div class="panel panel-default user-box">
+                            <div class="panel-body">
+                                <div class="media">
+                                    <a href="/profile/{{ item.user.id }}"><img src="{% static item.user.profile_image %}" alt="people" class="media-object img-circle pull-left" /></a>
+                                    <div class="media-body">
+                                        <a href="/profile/{{ item.user.id }}" class="username">{{ item.user.display_name }}
+                                        {% if item.user.gender == 'M' %}
+                                            {{ radio }} <i class="fa fa-fw fa-male"></i>
+                                        {% else %}
+                                            {{ radio }} <i class="fa fa-fw fa-female"></i>
+                                        {% endif %}</a>
+
+                                        <div class="profile-icons">
+                                            <span title="Following"><a href="{% if item.user.following|length > 0 %}/user_following/{{ item.user.id }}{% else %}#/{% endif %}">
+                                                <i class="fa fa-users"></i> {{ item.user.following|length }} Following</a></span>
+                                            <span title="Followers"><a href="{% if item.user.followers|length > 0 %}/user_followers/{{ item.user.id }}{% else %}#/{% endif %}">
+                                                <i class="fa fa-users"></i> {{ item.user.followers|length }} Followers</a></span></br>
+                                                <span title="Posts"><a href="{% for item2 in posts_number %}
+                                                                        {% if item.user.id == item2.user %}
+                                                                            {% if item2.number > 0 %}/profile/{{ item.user.id }}
+                                                                            {% else %}#/{% endif %}"><i class="fa fa-pencil"></i>
+                                                                                         {{ item2.number }} Posts</a></span>
+                                                                                    {% endif %}
+                                                                                 {% endfor %}
+                                        </div>
+                                        <div class="panel-footer">
+                                            <a href="#" name="statusBtn" class="btn btn-default btn-sm" data-user-id="{{ item.user.id }}"
+                                            {% if item.user in followed %}
+                                                title="Unfollow">Unfollow <i class="fa fa-remove">
+                                            {% elif item.user in requested %}
+                                                title="Cancel Request">Cancel Request <i class="fa fa-clock-o">
+                                            {% else %}
+                                                title="Cancel Request">Follow<i class="fa fa-check">
+                                            {% endif %}
+                                            </i></a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        </form>
+        {% if page_count|length > 1 %}
+        <div class="panel-footer padding-none text-center">
+            <ul class="pagination">
+            {% if user_pagination.has_previous %}
+                <li><a href="?page=1"><i class="fa fa-fast-backward"></i></a>
+                </li>
+                <li><a href="?page={{ user_pagination.previous_page_number}}"><i class="fa fa-backward"></i></a>
+                </li>
+            {% endif %}
+            {% for item in page_count|make_list %}
+                <li{% if forloop.counter == user_pagination.number %} class="active" {% endif %}><a href="?page={{ forloop.counter }}">{{ forloop.counter }}</a>
+                </li>
+            {% endfor %}
+            {% if user2.following.has_next %}
+                <li><a href="?page={{ user_pagination.next_page_number}}"><i class="fa fa-forward"></i></a>
+                </li>
+                <li><a href="?page={{ user_pagination.paginator.num_pages }}"><i class="fa fa-fast-forward"></i></a>
+                </li>
+            {% endif %}
+            </ul>
+        </div>
+        {% endif %}
+        </div>
+        <!--<div class="footer">Social Network Template &copy; Copyright Notice</div>-->
+    {% endblock %}

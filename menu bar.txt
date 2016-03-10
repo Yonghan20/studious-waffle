@@ -1,0 +1,52 @@
+                <li class="hasSubmenu ">
+                    <a href="#components" data-toggle="collapse"><i class="icon-paint-brushes"></i>UI Components</a>
+                    <ul class="collapse " id="components">
+                        <li class="">
+                            <a href="buttons.html"><i class="fa fa-circle-o"></i> Buttons</a>
+                        </li>
+                        <li class="">
+                            <a href="icons.html"><i class="fa fa-circle-o"></i> Icons</a>
+                        </li>
+                        <li class="">
+                            <a href="progress.html"><i class="fa fa-circle-o"></i> Progress</a>
+                        </li>
+                        <li class="">
+                            <a href="grid.html"><i class="fa fa-circle-o"></i> Grid</a>
+                        </li>
+                        <li class="">
+                            <a href="forms.html"><i class="fa fa-circle-o"></i> Forms</a>
+                        </li>
+                        <li class="">
+                            <a href="tables.html"><i class="fa fa-circle-o"></i> Tables</a>
+                        </li>
+                    </ul>
+                </li>
+
+                <!-- Sample 2 Level Collapse -->
+                <li class="hasSubmenu">
+                    <a href="#collapse" data-toggle="collapse">
+                        <i class="fa fa-chevron-circle-down"></i> Collapse
+                    </a>
+                    <ul class="collapse" id="collapse">
+                        <li class="hasSubmenu">
+                            <a href="#collapse-1" data-toggle="collapse"><i class="fa fa-circle-o"></i> Submenu</a>
+                            <ul class="collapse" id="collapse-1">
+                                <li><a href="#">Regular Link</a>
+                                </li>
+                            </ul>
+                        </li>
+                        <li><a href="#"><i class="fa fa-circle-o"></i> Regular Link</a>
+                        </li>
+                    </ul>
+                </li>
+                <li class="category">Filter</li>
+                <li class="reset">
+                    <ul>
+                        <li><a href="#"><span class="fa fa-fw fa-circle-o text-success"></span> Work Related</a>
+                        </li>
+                        <li><a href="#"><span class="fa fa-fw fa-circle-o text-primary"></span> Very Important</a>
+                        </li>
+                        <li><a href="#"><span class="fa fa-fw fa-circle-o text-info"></span> Friends &amp; Family</a>
+                        </li>
+                    </ul>
+                </li>

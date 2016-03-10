@@ -1,0 +1,128 @@
+{% extends "base.html" %}
+{% block title %}{{ template_title }}{% endblock %}
+{% block content %}
+    {% load static from staticfiles %}
+
+
+    <div class="container-fluid" style="margin-bottom: 0;">
+        <form action="/paypal/" method="post">{% csrf_token %}
+            <div class="text-center">
+                <h1>How much should you top up for credit?</h1>
+
+                <p class="lead">A lot less then you expect.</p>
+            </div>
+            <div class="row">
+                <div class="col-md-4">
+
+                    <!-- Pricing -->
+                    <div class="panel panel-default">
+                        <div class="panel-body text-center lead margin-bottom-none">
+                            Level 1 <span class="label topup">&dollar; 10</span>
+                        </div>
+                        <ul class="list-group">
+                            <li class="list-group-item"><i class="fa fa-check fa-fw text-muted"></i> Free Signup</li>
+                            <li class="list-group-item"><i class="fa fa-check fa-fw text-muted"></i> Email Address</li>
+                            <li class="list-group-item"><i class="fa fa-check fa-fw text-muted"></i> Friends Management
+                            </li>
+                        </ul>
+                        <div class="panel-body text-center">
+                            <button name="topUp10" type="submit" class="btn btn-default" title="Top up with PayPal">
+                                <i class="fa fa-paypal"></i> Add funds
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- // Pricing -->
+                </div>
+                <div class="col-md-4">
+
+                    <!-- Pricing -->
+                    <div class="panel panel-default">
+                        <div class="panel-body text-center lead margin-bottom-none">
+                            Level 2 <span class="label topup">&dollar; 30</span>
+                        </div>
+                        <ul class="list-group">
+                            <li class="list-group-item"><i class="fa fa-check fa-fw text-muted"></i> Free Signup</li>
+                            <li class="list-group-item"><i class="fa fa-check fa-fw text-muted"></i> Email Address</li>
+                            <li class="list-group-item"><i class="fa fa-check fa-fw text-muted"></i> Friends Management
+                            </li>
+                        </ul>
+                        <div class="panel-body text-center">
+                            <button name="topUp30" type="submit" class="btn btn-default" title="Top up with PayPal">
+                                <i class="fa fa-paypal"></i> Add funds
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- // Pricing -->
+                </div>
+                <div class="col-md-4">
+
+                    <!-- Pricing -->
+                    <div class="panel panel-default">
+                        <div class="panel-body text-center lead margin-bottom-none">
+                            Level 3 <span class="label topup">&dollar; 75</span>
+                        </div>
+                        <ul class="list-group">
+                            <li class="list-group-item"><i class="fa fa-check fa-fw text-muted"></i> Free Signup</li>
+                            <li class="list-group-item"><i class="fa fa-check fa-fw text-muted"></i> Email Address</li>
+                            <li class="list-group-item"><i class="fa fa-check fa-fw text-muted"></i> Friends Management
+                            </li>
+                        </ul>
+                        <div class="panel-body text-center">
+                            <button name="topUp75" type="submit" class="btn btn-default" title="Top up with PayPal">
+                                <i class="fa fa-paypal"></i> Add funds
+                            </button>
+                        </div>
+                    </div>
+                    <!-- // Pricing -->
+                </div>
+            </div>
+            <div class="col-md-4 col-md-offset-2">
+
+                <!-- Pricing -->
+                <div class="panel panel-default">
+                    <div class="panel-body text-center lead margin-bottom-none">
+                        Level 4 <span class="label topup">&dollar; 150</span>
+                    </div>
+                    <ul class="list-group">
+                        <li class="list-group-item"><i class="fa fa-check fa-fw text-muted"></i> Free Signup</li>
+                        <li class="list-group-item"><i class="fa fa-check fa-fw text-muted"></i> Email Address</li>
+                        <li class="list-group-item"><i class="fa fa-check fa-fw text-muted"></i> Friends Management
+                        </li>
+                    </ul>
+                    <div class="panel-body text-center">
+                        <button name="topUp150" type="submit" class="btn btn-default" title="Top up with PayPal">
+                            <i class="fa fa-paypal"></i> Add funds
+                        </button>
+                    </div>
+                </div>
+
+                <!-- // Pricing -->
+            </div>
+            <div class="col-md-4">
+
+                <!-- Pricing -->
+                <div class="panel panel-default">
+                    <div class="panel-body text-center lead margin-bottom-none">
+                        Level 5 <span class="label topup">&dollar; 300</span>
+                    </div>
+                    <ul class="list-group">
+                        <li class="list-group-item"><i class="fa fa-check fa-fw text-muted"></i> Free Signup</li>
+                        <li class="list-group-item"><i class="fa fa-check fa-fw text-muted"></i> Email Address</li>
+                        <li class="list-group-item"><i class="fa fa-check fa-fw text-muted"></i> Friends Management
+                        </li>
+                    </ul>
+                    <div class="panel-body text-center">
+                        <button name="topUp300" type="submit" class="btn btn-default" title="Top up with PayPal">
+                            <i class="fa fa-paypal"></i> Add funds
+                        </button>
+                    </div>
+                </div>
+
+                <!-- // Pricing -->
+            </div>
+        </form>
+    </div>
+    {#        <div class="footer">Social Network Template &copy; Copyright Notice</div>#}
+{% endblock %}

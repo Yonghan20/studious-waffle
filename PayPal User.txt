@@ -1,0 +1,8 @@
+buyer 1         : wyhBuyer@live.com
+password 1      : 12345678
+
+buyer 2         : justinBuyer@live.com
+password 2      : 12345678
+
+business email  : friendship@live.com
+password        : 12345678

@@ -1,0 +1,8 @@
+{
+    "shoes" : "Shoes",
+    "clothing" : "Clothing",
+    "accessory" : "Accessories",
+    "bag" : "Bags",
+    "sport" : "Sports",
+    "watch" : "Watches"
+}

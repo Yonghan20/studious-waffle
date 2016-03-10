@@ -1,0 +1,28 @@
+{% load humanize %}
+{% load static from staticfiles %}
+<a href="#" id="notifications-menu" class="dropdown-toggle" data-toggle="dropdown">
+    <i class="icon-user-2"></i>
+</a>
+<ul class="dropdown-menu" style="max-height:200px; width:300px; overflow-y: scroll;" data-scrollable>
+    {% if request_log|length <= 0 %}
+        <li class="media">
+            No follower request yet...
+        </li>
+    {% endif %}
+    {% for item in request_log|dictsortreversed:"created_date_time" %}
+        {% if item.edited_date_time == None and item.status == None %}
+        <li class="media">
+            <a class="pull-left" href="/profile/{{ item.user.id }}">
+                <img class="media-object thumb" src="{% static item.user.profile_image %}" id="common-friends" alt="people">
+            </a>
+            <div class="media-body">
+                <span class="label label-default pull-right">{{ item.created_date_time|naturaltime }}</span>
+                <h5 class="media-heading"><a href="/profile/{{ item.user.id }}"><b>{{ item.user.display_name }}</b></a> sent you a follower request.</h5>
+                <p class="margin-none" name="" id="{{ item.user.id }}">
+                    <a name="accept" class="btn btn-success btn-xs" data-user-id="{{ item.id }}"><i class="fa fa-check-circle"></i> Accept </a>
+                    <a name="reject" class="btn btn-danger btn-xs" data-user-id="{{ item.id }}"><i class="fa fa-times"></i> Reject </a></p>
+            </div>
+        </li>
+        {% endif %}
+    {% endfor %}
+</ul>

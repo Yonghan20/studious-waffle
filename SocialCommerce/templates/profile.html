@@ -1,0 +1,289 @@
+{% extends "base.html" %}
+{% block title %}{{ template_title }}{% endblock %}
+{% load static from staticfiles %}
+{% load humanize %}
+{% block content %}
+    <div class="container-fluid">
+            <div class="media user-profile">
+                <div class="media-object pull-left">
+                    <div class="panel panel-default profile-user-box">
+                        <div class="avatar">
+                            <img src="{% static user2.profile_image%}" alt="" class="img-circle" />
+                            <h3>{{ user2.display_name }}</h3>
+                            {% if user2.id != user.id %}
+                                <a href="#" class="btn btn-success">Following <i class="fa fa-check-circle fa-fw"></i></a>
+                            {% else %}
+                                <a href="#" class="btn btn-success" id="edit-profile">Edit Profile</a>
+                            {% endif %}
+                        </div>
+                        <i class="fa fa-fw fa-users"></i> {{ user2.following|length }} Following</a></br>
+                        <i class="fa fa-fw fa-users"></i> {{ user2.followers|length }} Followers</a></br>
+                        <i class="fa fa-pencil"></i> {{ posts_number.number }} Posts
+                    </li>
+                    </div>
+                    <!--About -->
+                    <div class="panel panel-default">
+                        <div class="panel-heading panel-heading-gray">
+                            <i class="fa fa-info-circle"></i> About
+                        </div>
+                        <div class="panel-body">
+                            <ul class="list-unstyled profile-about">
+                                <li>
+                                    <div class="row">
+                                        <div class="col-sm-4"><span class="text-muted">Date of Birth</span>
+                                        </div>
+                                        <div class="col-sm-8">12 January 1990</div>
+                                    </div>
+                                </li>
+                                <li>
+                                    <div class="row">
+                                        <div class="col-sm-4"><span class="text-muted">Job</span>
+                                        </div>
+                                        <div class="col-sm-8">Specialist</div>
+                                    </div>
+                                </li>
+                                <li>
+                                    <div class="row">
+                                        <div class="col-sm-4"><span class="text-muted">Gender</span>
+                                        </div>
+                                        <div class="col-sm-8">{% if user2.gender == "F" %}Female<i class="fa fa-fw fa-female"></i>{% else %}Male<i class="fa fa-fw fa-male"></i>{% endif %}</div>
+                                    </div>
+                                </li>
+                                <li>
+                                    <div class="row">
+                                        <div class="col-sm-4"><span class="text-muted">Lives in</span>
+                                        </div>
+                                        <div class="col-sm-8">Miami, FL, USA</div>
+                                    </div>
+                                </li>
+                                <li>
+                                    <div class="row">
+                                        <div class="col-sm-4"><span class="text-muted">Credits</span>
+                                        </div>
+                                        <div class="col-sm-8">249</div>
+                                    </div>
+                                </li>
+                                <li><i class="fa fa-envelope fa-fw"></i> <a href="mailto:someone@example.com?Subject=Hi {{ user2.display_name }}" target="_top">someone@example.com</a>
+                                </li>
+                                <li><i class="fa fa-phone fa-fw"></i> <a href="callto://+60123456789">+60123456789</a></li>
+                                <li><i class="fa fa-comment  fa-fw"></i>Hi! I'm Adrian the Senior UI Designer at
+                                <strong>MOSAICPRO</strong>. We hope you enjoy the design and quality of Social.</li>
+                            </ul>
+                            <ul class="icon-list block bordered">
+
+                        </ul>
+                        </div>
+                    </div>
+                    <!--Friends -->
+                    <div class="panel panel-default">
+                        <div class="panel-heading panel-heading-gray">
+                                    {% if user.id != user2.id %}
+                                        <a href="/user_following/{{ user2.id }}" class="btn btn-primary btn-xs pull-right">View</a>
+                                        <i class="fa fa-group"></i><a href="/user_following/{{ user2.id }}"> {{ user2.following|length }}</a> Following
+                                    {% else %}
+                                        <a href="/following" class="btn btn-primary btn-xs pull-right">View</a>
+                                        <i class="fa fa-group"></i><a href="/following/"> {{ user2.following|length }}</a> Following
+                                    {% endif %}
+                                </div>
+                        <ul class="list-unstyled friends-list">
+                            {% for item in user2.following|dictsort:"user.display_name"|slice:":5" %}
+                            <li>
+                                <a href="#">
+                                    <img src="{% static item.user.profile_image%}" alt="image" class="img-responsive" />
+                                </a>
+                            </li>
+                            {% endfor %}
+                        </ul>
+                        <div class="clearfix"></div>
+                        <div class="panel-heading panel-heading-gray">
+                            {% if user.id != user2.id %}
+                                <a href="/user_followers/{{ user2.id }}" class="btn btn-primary btn-xs pull-right">View</a>
+                                <i class="fa fa-group"></i> <a href="/user_followers/{{ user2.id }}">{{ user2.followers|length }}</a> Following
+                            {% else %}
+                                <a href="/followers" class="btn btn-primary btn-xs pull-right">View</a>
+                                <i class="fa fa-group"></i> <a href="/followers/">{{ user2.followers|length }}</a> Followers
+                            {% endif %}
+                        </div>
+                        <ul class="list-unstyled friends-list">
+                            {% for item in user2.followers|dictsort:"user.display_name"|slice:":5" %}
+                            <li>
+                                <a href="#">
+                                    <img src="{% static item.user.profile_image%}" alt="image" class="img-responsive" />
+                                </a>
+                            </li>
+                            {% endfor %}
+                        </ul>
+                        <div class="clearfix"></div>
+                    </div>
+                </div>
+                <div class="media-body">
+                    <div class="panel panel-default">
+                        <ul class="nav nav-tabs" role="tablist">
+                            <li class="active"><a href="#home" role="tab" data-toggle="tab"><i class="fa fa-picture-o"></i> Photos</a>
+                            </li>
+                            <li class=""><a href="#profile" role="tab" data-toggle="tab"><i class="fa fa-folder"></i> Albums</a>
+                            </li>
+                        </ul>
+                        <div class="tab-content">
+                            <div class="tab-pane fade active in" id="home">
+                                <img src="{% static "images/place1.jpg"%}" alt="image" />
+                                <img src="{% static "images/place2.jpg"%}" alt="image" />
+                                <img src="{% static "images/food1.jpg"%}" alt="image" />
+                            </div>
+                            <div class="tab-pane fade" id="profile">
+                                <p>Food truck fixie locavore, accusamus mcsweeney's marfa nulla single-origin coffee squid. Exercitation +1 labore velit, blog sartorial PBR leggings next level wes anderson artisan four loko farm-to-table craft beer twee. Qui photo booth letterpress, commodo enim craft beer mlkshk aliquip jean shorts ullamco ad vinyl cillum PBR. Homo nostrud organic, assumenda labore aesthetic magna delectus mollit. Keytar helvetica VHS salvia yr, vero magna velit sapiente labore stumptown. Vegan fanny pack odio cillum wes anderson 8-bit, sustainable jean shorts beard ut DIY ethical culpa terry richardson biodiesel. Art party scenester stumptown, tumblr butcher vero sint qui sapiente accusamus tattooed echo park.</p>
+                            </div>
+                            <div class="tab-pane fade" id="dropdown1">
+                                <p>Etsy mixtape wayfarers, ethical wes anderson tofu before they sold out mcsweeney's organic lomo retro fanny pack lo-fi farm-to-table readymade. Messenger bag gentrify pitchfork tattooed craft beer, iphone skateboard locavore carles etsy salvia banksy hoodie helvetica. DIY synth PBR banksy irony. Leggings gentrify squid 8-bit cred pitchfork. Williamsburg banh mi whatever gluten-free, carles pitchfork biodiesel fixie etsy retro mlkshk vice blog. Scenester cred you probably haven't heard of them, vinyl craft beer blog stumptown. Pitchfork sustainable tofu synth chambray yr.</p>
+                            </div>
+                            <div class="tab-pane fade" id="dropdown2">
+                                <p>Trust fund seitan letterpress, keytar raw denim keffiyeh etsy art party before they sold out master cleanse gluten-free squid scenester freegan cosby sweater. Fanny pack portland seitan DIY, art party locavore wolf cliche high life echo park Austin. Cred vinyl keffiyeh DIY salvia PBR, banh mi before they sold out farm-to-table VHS viral locavore cosby sweater. Lomo wolf viral, mustache readymade thundercats keffiyeh craft beer marfa ethical. Wolf salvia freegan, sartorial keffiyeh echo park vegan.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+
+                        </div>
+                        <div class="col-md-6">
+
+
+                        </div>
+                    </div>
+                    <div class="panel panel-default">
+                        <div class="panel-heading panel-heading-gray">
+                            <i class="fa fa-pencil"></i> <a href="#/">{{ posts_number.number }}</a> Posts
+                        </div>
+                        <div class="panel-body">
+                        {% for item in posts|dictsortreversed:"created_date_time"|slice:":5" %}
+                            <!--Type 1, text only-->
+                            <div class="timeline-block" id="post{{ item.id }}">
+                                <div class="panel panel-default">
+                                    <div class="panel-heading">
+                                        <div class="media">
+                                            <a href="/profile/{{ item.user.id }}" class="pull-left">
+                                                <img src="{% static item.user.profile_image %}" id="common-friends" class="media-object">
+                                            </a>
+                                            <div class="media-body">
+                                                {% if item.user == user %}<a href="#/" class="pull-right text-muted" name="delete" data-user-id="{{ item.id }}"><i class="icon-circle-delete fa fa-2x "></i></a>
+                                                    <a href="#/" class="pull-right text-muted" name="edit" data-user-id="{{ item.id }}"><i class="fa-edit fa fa-2x "></i></a>{% endif %}
+                                                    <a href="/profile/{{ item.user.id }}">{{ item.user.display_name }}</a>
+                                            {% if item.edited_date_time == None %}
+                                                <span title="{{ item.created_date_time }}">on {{ item.created_date_time|naturaltime }}</span>
+                                            {% else %}
+                                                <span title="{{ item.edited_date_time }}">edited on {{ item.edited_date_time|naturaltime }}</span>
+                                            {% endif %} <a href="/posts/{{ item.id }}" style="color:black;" class="btn btn-default btn-xs pull-right">View</a></div>
+                                        </div>
+                                    </div>
+                                    <div class="panel-body" id="post-content">
+                                        {{ item.content }}
+                                    </div>
+                                    {% if item.from_posts != None and item.from_user != None %}
+                                        <div style="width: 80%; border:1px solid;">
+                                        <div class="panel-heading">
+                                        <div class="media">
+                                            <a href="/profile/{{ item.from_user.id }}" class="pull-left">
+                                                <img src="{% static item.from_user.profile_image %}" id="common-friends" class="media-object">
+                                            </a>
+                                            <div class="media-body">
+                                            <a href="/profile/{{ item.from_user.id }}"> shared {% if item.from_user == item.user  %}
+                                                                                                        own
+                                                                                                    {% elif item.from_user == user  %}your
+                                                                                                    {% else %}{{ item.from_user.display_name }}'s {% endif %} post.</a>
+                                            {% if item.from_posts.edited_date_time == None %}
+                                                <span title="{{ item.from_posts.created_date_time }}">posted on {{ item.from_posts.created_date_time|naturaltime }}</span>
+                                            {% else %}
+                                                <span title="{{ item.from_posts.edited_date_time }}">edited on {{ item.from_posts.edited_date_time|naturaltime }}</span>
+                                            {% endif %} <a href="/posts/{{ item.from_posts.id }}" style="color:black;" class="btn btn-default btn-xs pull-right">View</a></div>
+                                        </div>
+                                        </div>
+                                            <div class="panel-body">
+                                                {% if item.from_posts.content == None %}
+                                                    This posts has been deleted by owner.
+                                                {% endif %}
+                                                {{ item.from_posts.content }}
+                                            </div>
+                                            {% if item.from_posts.location != None %}
+                                                <div class="panel-body text-muted">
+                                                    <i class="fa fa-map-marker"></i> Was in <a href="https://www.google.com.my/maps/dir//{{ item.from_posts.location_code }}/@,17z?hl=en" target="_blank">{{ item.from_posts.location }}</a>
+                                                </div>
+                                                <a href="https://www.google.com.my/maps/dir//{{ item.from_posts.location_code }}/@,17z?hl=en" target="_blank"><img src="http://maps.googleapis.com/maps/api/staticmap?&zoom=15&size=350x100&scale=2&maptype=roadmap
+                                                &markers=color:red%7C{{ item.from_posts.location_code }}" class="img-responsive" ></a>
+                                            {% endif %}
+                                        </div>
+                                    {% endif %}
+                                    {% if item.location != None %}
+                                        <div class="panel-body text-muted">
+                                            <i class="fa fa-map-marker"></i> Was in <a href="https://www.google.com.my/maps/dir//{{ item.location_code }}/@,17z?hl=en" target="_blank">{{ item.location }}</a>
+                                        </div>
+                                        <a href="https://www.google.com.my/maps/dir//{{ item.location_code }}/@,17z?hl=en" target="_blank"><img src="http://maps.googleapis.com/maps/api/staticmap?&zoom=15&size=350x100&scale=2&maptype=roadmap
+                                        &markers=color:red%7C{{ item.location_code }}" class="img-responsive" ></a>
+                                    {% endif %}
+                                    <div class="view-all-comments">
+                                        <a href="#/" name="likes" data-user-id="{{ item.id }}"><i class="{% if item in liked_posts %}fa fa-thumbs-down{% else %}fa fa-thumbs-up{% endif %}"></i> {{ item.likes|length }} </a>
+                                        <a href="#/" data-toggle="popover" data-content="<div style='height:auto; max-height:500px; overflow-y:scroll;' data-scrollable>{% for item2 in item.likes %}
+                                        <a href='/profile/{{ item2.user.id }}' title='like at {{ item2.created_date_time }}'><img src='{% static item2.user.profile_image%} 'alt='people' class='img-circle' id='show-popover'/> {{ item2.user.display_name }} </a>{% if forloop.counter|divisibleby:2 %}</br>{% endif %}
+                                        {% endfor %}</div>">Likes </a>
+                                        <a href="#/" name="share" data-user-id="{{ item.id }}"><i class="fa fa-share"></i> {{ item.share|length }} </a><a href="#/" data-toggle="popover" data-content="<div style='height:auto; max-height:500px; overflow-y:scroll;' data-scrollable>{% for item2 in item.share %}
+                                        <a href='/profile/{{ item2.user.id }}' title='share at {{ item2.created_date_time }}'><img src='{% static item2.user.profile_image%} 'alt='people' class='img-circle' id='show-popover'/> {{ item2.user.display_name }} </a>{% if forloop.counter|divisibleby:2 %}</br>{% endif %}
+                                        {% endfor %}</div>" > Shares </a>
+                                    </div>
+                                    <div class="view-all-comments"><a href="#comments{{ item.id }}"  data-toggle="collapse" class="collapsed"  id="comments-length{{ item.id }}"><i class="fa fa-comments" ></i> {{ item.comments|length }} comments</a></div>
+                                    <ul class="comments">
+                                        <li class="comment-form">
+                                            <div class="input-group">
+                                                <input type="text" class="form-control" id="comments-content{{ item.id }}" />
+                                                <span class="input-group-addon">
+                                                   <a href="#/" name="comment-send" data-user-id="{{ item.id }}"><i class="fa fa-send"></i></a>
+                                                </span>
+                                            </div>
+                                        </li>
+                                    </ul>
+                                    <ul class="collapse comments" id="comments{{ item.id }}" style=" max-height:305px; overflow-y:scroll;">
+                                        {% for item2 in item.comments|dictsortreversed:"created_date_time" %}
+                                        <li>
+                                            <div class="media">
+                                                <a href="/profile/{{ item2.user.id }}" class="pull-left">
+                                                    <img src="{% static item2.user.profile_image%}"  class="media-object"  id="common-friends">
+                                                </a>
+                                                <div class="media-body">
+                                                    <a href="" class="comment-author">{{ item2.user.display_name }}</a>
+                                                    <span>{{ item2.content }}</span>
+                                                    <div class="comment-date" title="{{ item2.create_date_time }}">{{ item2.created_date_time|naturaltime }}</div>
+                                                </div>
+                                            </div>
+                                        </li>
+                                        {% endfor %}
+                                    </ul>
+                                </div>
+                            </div>
+                        {% endfor %}
+                        {% if page_count|length > 1 %}
+        <div class="panel-footer padding-none text-center">
+            <ul class="pagination">
+            {% if posts.has_previous %}
+                <li><a href="?page=1"><i class="fa fa-fast-backward"></i></a>
+                </li>
+                <li><a href="?page={{ posts.previous_page_number}}"><i class="fa fa-backward"></i></a>
+                </li>
+            {% endif %}
+            {% for item in page_count|make_list %}
+                <li{% if forloop.counter == posts.number %} class="active" {% endif %}><a href="?page={{ forloop.counter }}">{{ forloop.counter }}</a>
+                </li>
+            {% endfor %}
+            {% if posts.has_next %}
+                <li><a href="?page={{ posts.next_page_number}}"><i class="fa fa-forward"></i></a>
+                </li>
+                <li><a href="?page={{ posts.paginator.num_pages }}"><i class="fa fa-fast-forward"></i></a>
+                </li>
+            {% endif %}
+            </ul>
+        </div>
+        {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    <!--<div class="footer">Social Network Template &copy; Copyright Notice</div>-->
+{% endblock %}

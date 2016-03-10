@@ -1,0 +1,32 @@
+{% extends "main.html" %}
+{% block title %}{{ template_title }}{% endblock %}
+{% block content %}
+{% load static from staticfiles %}
+<h1>{{ template_title }}</h1>
+<div class="panel panel-default text-center">
+    <form action="/register/" method="post">{% csrf_token %}
+    <div class="panel-body">
+
+        {% for field in form %}
+            <div class="fieldWrapper">
+            {% if field.name != 'gender' %}
+                {{ field }} {% for error in field.errors %}<error>{{ error|escape }}</error> {% endfor %}
+            {% else%}
+                {% for radio in field %}
+                    {% if radio.choice_label == 'Male' %}
+                        {{ radio }} <i class="fa fa-fw fa-male"></i>
+                    {% else %}
+                        {{ radio }} <i class="fa fa-fw fa-female"></i>
+                    {% endif %}
+                {% endfor %}
+            {% endif %}
+            </div>
+        {% endfor %}
+
+        <input type="submit" class="btn btn-primary" id="submit" value="{{ template_title }}">
+        <input type="reset" class="btn btn-danger" id="reset" value="Reset">
+        <a href="/login/" class="forgot-password">Back to Login Page</a>
+    </div>
+    </form>
+<div>
+{% endblock %}

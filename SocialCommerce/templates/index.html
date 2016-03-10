@@ -1,0 +1,268 @@
+{% extends "base.html" %}
+{% block title %}{{ template_title }}{% endblock %}
+{% load static from staticfiles %}
+{% load humanize %}
+{% block content %}
+    <div class="container-fluid">
+
+        <div class="timeline" data-toggle="gridalicious" id="timeline-posts">
+        <!--input area-->
+        <div class="timeline-block">
+                <div class="panel panel-default share">
+                    <div class="panel-heading panel-heading-gray title">
+                        What&acute;s new <span id="address"></span>
+                    </div>
+                    <div class="progress" id="progress-bar" style="display:none;">
+                        <div class="progress-bar progress-bar-striped active" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 45%">
+                        </div>
+                    </div>
+                    <div class="panel-body" >
+                        <textarea name="status" style="resize: none;" id="status-new" class="form-control share-text" rows="5" maxlength="300" placeholder="Write Something..."></textarea>
+                    </div>
+                    <div class="panel-footer share-buttons">
+                        <a href="#/" id="maps-markers">
+                            <i class="fa fa-map-marker"></i>
+                        </a>
+                        <!--<a href="#/">
+                            <i class="fa fa-photo"></i>
+                        </a>
+                        <a href="#/">
+                            <i class="fa fa-video-camera"></i>
+                        </a>-->
+                        <button type="submit" id="post-new" class="btn btn-primary btn-xs pull-right display-none" href="#">Post</button>
+                    </div>
+                </div>
+            </div>
+        {% for item in own_posts|dictsortreversed:"created_date_time" %}
+            <!--Type 1, text only-->
+            <div class="timeline-block" id="post{{ item.id }}">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <div class="media">
+                            <a href="/profile/{{ item.user.id }}" class="pull-left">
+                                <img src="{% static item.user.profile_image %}" id="common-friends" class="media-object">
+                            </a>
+                            <div class="media-body">
+                                {% if item.user == user %}<a href="#/" class="pull-right text-muted" name="delete" data-user-id="{{ item.id }}"><i class="icon-circle-delete fa fa-2x "></i></a>
+                                    <a href="#/" class="pull-right text-muted" name="edit" data-user-id="{{ item.id }}"><i class="fa-edit fa fa-2x "></i></a>{% endif %}
+                                    <a href="/profile/{{ item.user.id }}">{{ item.user.display_name }}</a>
+                            {% if item.edited_date_time == None %}
+                                <span title="{{ item.created_date_time }}">on {{ item.created_date_time|naturaltime }}</span>
+                            {% else %}
+                                <span title="{{ item.edited_date_time }}">edited on {{ item.edited_date_time|naturaltime }}</span>
+                            {% endif %}<a href="/posts/{{ item.id }}" style="color:black;" class="btn btn-default btn-xs pull-right">View</a></div>
+                        </div>
+                    </div>
+                    <div class="panel-body" id="post-content">
+                        {{ item.content }}
+                    </div>
+                    {% if item.from_posts != None and item.from_user != None %}
+                        <div style="width: 80%; border:1px solid;">
+                        <div class="panel-heading">
+                        <div class="media">
+                            <a href="/profile/{{ item.from_user.id }}" class="pull-left">
+                                <img src="{% static item.from_user.profile_image %}" id="common-friends" class="media-object">
+                            </a>
+                            <div class="media-body">
+                            <a href="/profile/{{ item.from_user.id }}"> shared {% if item.from_user == item.user  %}
+                                                                                        own
+                                                                                    {% elif item.from_user == user  %}your
+                                                                                    {% else %}{{ item.from_user.display_name }}'s {% endif %} post.</a>
+                            {% if item.from_posts.edited_date_time == None %}
+                                <span title="{{ item.from_posts.created_date_time }}">posted on {{ item.from_posts.created_date_time|naturaltime }}</span>
+                            {% else %}
+                                <span title="{{ item.from_posts.edited_date_time }}">edited on {{ item.from_posts.edited_date_time|naturaltime }}</span>
+                            {% endif %} <a href="/posts/{{ item.from_posts.id }}" style="color:black;" class="btn btn-default btn-xs pull-right">View</a></div>
+                        </div>
+                        </div>
+                            <div class="panel-body">
+                                {% if item.from_posts.content == None %}
+                                    This posts has been deleted by owner.
+                                {% endif %}
+                                {{ item.from_posts.content }}
+                            </div>
+                            {% if item.from_posts.location != None %}
+                                <div class="panel-body text-muted">
+                                    <i class="fa fa-map-marker"></i> Was in <a href="https://www.google.com.my/maps/dir//{{ item.from_posts.location_code }}/@,17z?hl=en" target="_blank">{{ item.from_posts.location }}</a>
+                                </div>
+                                <a href="https://www.google.com.my/maps/dir//{{ item.from_posts.location_code }}/@,17z?hl=en" target="_blank"><img src="http://maps.googleapis.com/maps/api/staticmap?&zoom=15&size=350x100&scale=2&maptype=roadmap
+                                &markers=color:red%7C{{ item.from_posts.location_code }}" class="img-responsive" ></a>
+                            {% endif %}
+                        </div>
+                    {% endif %}
+                    {% if item.location != None %}
+                        <div class="panel-body text-muted">
+                            <i class="fa fa-map-marker"></i> Was in <a href="https://www.google.com.my/maps/dir//{{ item.location_code }}/@,17z?hl=en" target="_blank">{{ item.location }}</a>
+                        </div>
+                        <a href="https://www.google.com.my/maps/dir//{{ item.location_code }}/@,17z?hl=en" target="_blank"><img src="http://maps.googleapis.com/maps/api/staticmap?&zoom=15&size=350x100&scale=2&maptype=roadmap
+                        &markers=color:red%7C{{ item.location_code }}" class="img-responsive" ></a>
+                    {% endif %}
+                    <div class="view-all-comments">
+                        <a href="#/" name="likes" data-user-id="{{ item.id }}"><i class="{% if item in liked_posts %}fa fa-thumbs-down{% else %}fa fa-thumbs-up{% endif %}"></i> {{ item.likes|length }} </a>
+                        <a href="#/" data-toggle="popover" data-content="<div style='height:auto; max-height:500px; overflow-y:scroll;' data-scrollable>{% for item2 in item.likes %}
+                        <a href='/profile/{{ item2.user.id }}' title='like at {{ item2.created_date_time }}'><img src='{% static item2.user.profile_image%} 'alt='people' class='img-circle' id='show-popover'/> {{ item2.user.display_name }} </a>{% if forloop.counter|divisibleby:2 %}</br>{% endif %}
+                        {% endfor %}</div>">Likes </a>
+                        <a href="#/" name="share" data-user-id="{{ item.id }}"><i class="fa fa-share"></i> {{ item.share|length }} </a><a href="#/" data-toggle="popover" data-content="<div style='height:auto; max-height:500px; overflow-y:scroll;' data-scrollable>{% for item2 in item.share %}
+                        <a href='/profile/{{ item2.user.id }}' title='share at {{ item2.created_date_time }}'><img src='{% static item2.user.profile_image%} 'alt='people' class='img-circle' id='show-popover'/> {{ item2.user.display_name }} </a>{% if forloop.counter|divisibleby:2 %}</br>{% endif %}
+                        {% endfor %}</div>" > Shares </a>
+                    </div>
+                    <div class="view-all-comments"><a href="#comments{{ item.id }}"  data-toggle="collapse" class="collapsed"  id="comments-length{{ item.id }}"><i class="fa fa-comments" ></i> {{ item.comments|length }} comments</a></div>
+                    <ul class="comments">
+                        <li class="comment-form">
+                            <div class="input-group">
+                                <input type="text" class="form-control" id="comments-content{{ item.id }}" />
+                                <span class="input-group-addon">
+                                   <a href="#/" name="comment-send" data-user-id="{{ item.id }}"><i class="fa fa-send"></i></a>
+                                </span>
+                            </div>
+                        </li>
+                    </ul>
+                    <ul class="collapse comments" id="comments{{ item.id }}" style=" max-height:305px; overflow-y:scroll;">
+                        {% for item2 in item.comments|dictsortreversed:"created_date_time" %}
+                        <li>
+                            <div class="media">
+                                <a href="/profile/{{ item2.user.id }}" class="pull-left">
+                                    <img src="{% static item2.user.profile_image%}"  class="media-object"  id="common-friends">
+                                </a>
+                                <div class="media-body">
+                                    <a href="" class="comment-author">{{ item2.user.display_name }}</a>
+                                    <span>{{ item2.content }}</span>
+                                    <div class="comment-date" title="{{ item2.create_date_time }}">{{ item2.created_date_time|naturaltime }}</div>
+                                </div>
+                            </div>
+                        </li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            </div>
+        {% endfor %}
+        {% for item in posts|dictsortreversed:"created_date_time"|slice:":20" %}
+            <!--Type 1, text only-->
+            <div class="timeline-block" id="post{{ item.id }}">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <div class="media">
+                            <a href="/profile/{{ item.user.id }}" class="pull-left">
+                                <img src="{% static item.user.profile_image %}" id="common-friends" class="media-object">
+                            </a>
+                            <div class="media-body">
+                                {% if item.user == user %}<a href="#/" class="pull-right text-muted" name="delete" data-user-id="{{ item.id }}"><i class="icon-circle-delete fa fa-2x "></i></a>
+                                    <a href="#/" class="pull-right text-muted" name="edit" data-user-id="{{ item.id }}"><i class="fa-edit fa fa-2x "></i></a>{% endif %}
+                                    <a href="/profile/{{ item.user.id }}">{{ item.user.display_name }}</a>
+                            {% if item.edited_date_time == None %}
+                                <span title="{{ item.created_date_time }}">on {{ item.created_date_time|naturaltime }}</span>
+                            {% else %}
+                                <span title="{{ item.edited_date_time }}">edited on {{ item.edited_date_time|naturaltime }}</span>
+                            {% endif %} <a href="/posts/{{ item.id }}" style="color:black;" class="btn btn-default btn-xs pull-right">View</a></div>
+                        </div>
+                    </div>
+                    <div class="panel-body" id="post-content">
+                        {{ item.content }}
+                    </div>
+                    {% if item.from_posts != None and item.from_user != None %}
+                        <div style="width: 80%; border:1px solid;">
+                        <div class="panel-heading">
+                        <div class="media">
+                            <a href="/profile/{{ item.from_user.id }}" class="pull-left">
+                                <img src="{% static item.from_user.profile_image %}" id="common-friends" class="media-object">
+                            </a>
+                            <div class="media-body">
+                            <a href="/profile/{{ item.from_user.id }}"> shared {% if item.from_user == item.user  %}
+                                                                                        own
+                                                                                    {% elif item.from_user == user  %}your
+                                                                                    {% else %}{{ item.from_user.display_name }}'s {% endif %} post.</a>
+                            {% if item.from_posts.edited_date_time == None %}
+                                <span title="{{ item.from_posts.created_date_time }}">posted on {{ item.from_posts.created_date_time|naturaltime }}</span>
+                            {% else %}
+                                <span title="{{ item.from_posts.edited_date_time }}">edited on {{ item.from_posts.edited_date_time|naturaltime }}</span>
+                            {% endif %} <a href="/posts/{{ item.from_posts.id }}" style="color:black;" class="btn btn-default btn-xs pull-right">View</a></div>
+                        </div>
+                        </div>
+                            <div class="panel-body">
+                                {% if item.from_posts.content == None %}
+                                    This posts has been deleted by owner.
+                                {% endif %}
+                                {{ item.from_posts.content }}
+                            </div>
+                            {% if item.from_posts.location != None %}
+                                <div class="panel-body text-muted">
+                                    <i class="fa fa-map-marker"></i> Was in <a href="https://www.google.com.my/maps/dir//{{ item.from_posts.location_code }}/@,17z?hl=en" target="_blank">{{ item.from_posts.location }}</a>
+                                </div>
+                                <a href="https://www.google.com.my/maps/dir//{{ item.from_posts.location_code }}/@,17z?hl=en" target="_blank"><img src="http://maps.googleapis.com/maps/api/staticmap?&zoom=15&size=350x100&scale=2&maptype=roadmap
+                                &markers=color:red%7C{{ item.from_posts.location_code }}" class="img-responsive" ></a>
+                            {% endif %}
+                        </div>
+                    {% endif %}
+                    {% if item.location != None %}
+                        <div class="panel-body text-muted">
+                            <i class="fa fa-map-marker"></i> Was in <a href="https://www.google.com.my/maps/dir//{{ item.location_code }}/@,17z?hl=en" target="_blank">{{ item.location }}</a>
+                        </div>
+                        <a href="https://www.google.com.my/maps/dir//{{ item.location_code }}/@,17z?hl=en" target="_blank"><img src="http://maps.googleapis.com/maps/api/staticmap?&zoom=15&size=350x100&scale=2&maptype=roadmap
+                        &markers=color:red%7C{{ item.location_code }}" class="img-responsive" ></a>
+                    {% endif %}
+                    <div class="view-all-comments">
+                        <a href="#/" name="likes" data-user-id="{{ item.id }}"><i class="{% if item in liked_posts %}fa fa-thumbs-down{% else %}fa fa-thumbs-up{% endif %}"></i> {{ item.likes|length }} </a>
+                        <a href="#/" data-toggle="popover" data-content="<div style='height:auto; max-height:500px; overflow-y:scroll;' data-scrollable>{% for item2 in item.likes %}
+                        <a href='/profile/{{ item2.user.id }}' title='like at {{ item2.created_date_time }}'><img src='{% static item2.user.profile_image%} 'alt='people' class='img-circle' id='show-popover'/> {{ item2.user.display_name }} </a>{% if forloop.counter|divisibleby:2 %}</br>{% endif %}
+                        {% endfor %}</div>">Likes </a>
+                        <a href="#/" name="share" data-user-id="{{ item.id }}"><i class="fa fa-share"></i> {{ item.share|length }} </a><a href="#/" data-toggle="popover" data-content="<div style='height:auto; max-height:500px; overflow-y:scroll;' data-scrollable>{% for item2 in item.share %}
+                        <a href='/profile/{{ item2.user.id }}' title='share at {{ item2.created_date_time }}'><img src='{% static item2.user.profile_image%} 'alt='people' class='img-circle' id='show-popover'/> {{ item2.user.display_name }} </a>{% if forloop.counter|divisibleby:2 %}</br>{% endif %}
+                        {% endfor %}</div>" > Shares </a>
+                    </div>
+                    <div class="view-all-comments"><a href="#comments{{ item.id }}"  data-toggle="collapse" class="collapsed"  id="comments-length{{ item.id }}"><i class="fa fa-comments" ></i> {{ item.comments|length }} comments</a></div>
+                    <ul class="comments">
+                        <li class="comment-form">
+                            <div class="input-group">
+                                <input type="text" class="form-control" id="comments-content{{ item.id }}" />
+                                <span class="input-group-addon">
+                                   <a href="#/" name="comment-send" data-user-id="{{ item.id }}"><i class="fa fa-send"></i></a>
+                                </span>
+                            </div>
+                        </li>
+                    </ul>
+                    <ul class="collapse comments" id="comments{{ item.id }}" style=" max-height:305px; overflow-y:scroll;">
+                        {% for item2 in item.comments|dictsortreversed:"created_date_time" %}
+                        <li>
+                            <div class="media">
+                                <a href="/profile/{{ item2.user.id }}" class="pull-left">
+                                    <img src="{% static item2.user.profile_image%}"  class="media-object"  id="common-friends">
+                                </a>
+                                <div class="media-body">
+                                    <a href="" class="comment-author">{{ item2.user.display_name }}</a>
+                                    <span>{{ item2.content }}</span>
+                                    <div class="comment-date" title="{{ item2.create_date_time }}">{{ item2.created_date_time|naturaltime }}</div>
+                                </div>
+                            </div>
+                        </li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            </div>
+        {% endfor %}
+
+        {% if page_count|length > 1 %}
+        <div class="panel-footer padding-none text-center">
+            <ul class="pagination">
+            {% if posts.has_previous %}
+                <li><a href="?page=1"><i class="fa fa-fast-backward"></i></a>
+                </li>
+                <li><a href="?page={{ posts.previous_page_number}}"><i class="fa fa-backward"></i></a>
+                </li>
+            {% endif %}
+            {% for item in page_count|make_list %}
+                <li{% if forloop.counter == posts.number %} class="active" {% endif %}><a href="?page={{ forloop.counter }}">{{ forloop.counter }}</a>
+                </li>
+            {% endfor %}
+            {% if posts.has_next %}
+                <li><a href="?page={{ posts.next_page_number}}"><i class="fa fa-forward"></i></a>
+                </li>
+                <li><a href="?page={{ posts.paginator.num_pages }}"><i class="fa fa-fast-forward"></i></a>
+                </li>
+            {% endif %}
+            </ul>
+        </div>
+        {% endif %}
+        </div>
+        </div>
+    </div>
+{% endblock %}

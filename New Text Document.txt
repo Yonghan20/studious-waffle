@@ -1,0 +1,3 @@
+        main_key.FOLLOWING_USER_LOG: GetFollowingUserLog(user),
+        main_key.REQUEST_LOG: GetUserRequestedLogByUser(user),
+        main_key.PRIVATE_LOG: GetPrivateLogByUser(user),

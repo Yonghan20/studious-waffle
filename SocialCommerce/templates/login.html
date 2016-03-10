@@ -1,0 +1,41 @@
+{% extends "main.html" %}
+{% block title %}{{ template_title }}{% endblock %}
+{% load static from staticfiles %}
+{% block content %}
+    <h1>{{ template_title }}</h1>
+    <div class="panel panel-default text-center">
+        {% ifequal user_image None %}
+            <img src="{% static "images/people/110/default-user.jpg"%}" class="img-circle">
+        {% else %}
+            <img src="{% static user_image%}" class="img-circle">
+        {% endifequal %}
+        <div class="panel-body">
+            {% if registered != None %}
+                <success>{{ registered }}</success>
+            {% elif is_not_activated != None%}
+                <script type="text/javascript">
+                setTimeout(function() {
+                    window.location.href = "/activation/";
+                }, 5000);
+                </script>
+                <error>{{ is_not_activated }}<a href="/activation/">here</a></error>
+            {% endif %}
+            <form id="myform" action="/login/" method="post">{% csrf_token %}
+                {% for field in form %}
+                    <div class="fieldWrapper">
+                        {% if field.label == "Remember me" %}
+                            <span>{{ field }} {{ field.label }}</span>
+                        {% else %}
+                            {{ field }}{% for error in field.errors %}<error>{{ error|escape }}</error> {% endfor %}
+                        {% endif %}
+                    </div>
+                {% endfor %}
+                <input type="submit" id="submit" hidden>
+                <a href="#" class="btn btn-primary" id="loginBtn">{{ template_title }} <i class="fa fa-fw fa-sign-in"></i></a>
+                <a href="/register/" class="btn btn-warning" id="RegisterBtn">Register </a>
+                <a href="#" class="btn btn-danger" id="reset">Reset</a>
+                <a href="/forgetpassword/" class="forgot-password">Forgot password?</a>
+            </form>
+        </div>
+    </div>
+{% endblock %}

@@ -1,0 +1,163 @@
+{% extends "base.html" %}
+{% block title %}{{ template_title }}{% endblock %}
+{% load static from staticfiles %}
+{% block content %}
+    {#    {% for item in pdetail %}#}
+    {#        <div>{{ item.name }}</div>#}
+    {#    {% endfor %}#}
+    {#    <div>test</div>#}
+
+    <div class="container-fluid">
+        {% for item in pdetail %}
+            <div class="media user-profile">
+                <div class="media-object pull-left">
+                    <div class="panel panel-default profile-user-box">
+                        <div class="avatar">
+                            <img src="{% static item.image %}" width="200" class="img-circle"/>
+
+                            <h3>{{ item.name }}</h3>
+                            {% if item.status == 'Available' %}
+                                <label class="btn btn-success">{{ item.status }} <i
+                                        class="fa fa-check-circle fa-fw"></i></label>
+                            {% else %}
+                                <label class="btn btn-danger"
+                                       title="This item is currently unavailable.">{{ item.status }} <i
+                                        class="fa fa-times"></i></label>
+                            {% endif %}
+                        </div>
+                        <div class="profile-icons">
+                            <span><i class="fa fa-users"></i> 372</span> <span><i class="fa fa-photo"></i> 43</span>
+                            <span><i class="fa fa-video-camera"></i> 3 </span>
+                        </div>
+                        <p>{{ item.description }}</p>
+                    </div>
+
+                    <!-- Contact -->
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            Seller's Info
+                        </div>
+                        <ul class="icon-list block bordered">
+                            {#                            <li><i class="fa fa-envelope fa-fw"></i> <a href="#">{{ item.user.email }}</a>#}
+                            {#                            </li>#}
+                            <li><i class="fa fa-user fa-fw"></i> <label title="Seller's name" style="font-weight:normal;">{{ item.seller.display_name }}</label>
+                            </li>
+                            <li><i class="fa fa-envelope fa-fw"></i> <label title="Seller's email" style="font-weight:normal;">{{ item.seller.email }}</label>
+                            </li>
+                            <li><i class="fa fa-facebook fa-fw"></i> <a href="/profile/{{ item.seller.id }}">Seller's profile</a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="media-body">
+                    {#                    <div class="panel panel-default share">#}
+                    {#                        <div class="input-group">#}
+                    {#                            <div class="input-group-btn">#}
+                    {#                                <a class="btn btn-primary" href="#"><i class="fa fa-envelope"></i> Send</a>#}
+                    {#                            </div>#}
+                    {##}
+                    {#                            <!-- /btn-group -->#}
+                    {#                            <input type="text" class="form-control share-text" placeholder="Write message..."/>#}
+                    {#                        </div>#}
+                    {##}
+                    {#                        <!-- /input-group -->#}
+                    {#                    </div>#}
+                    <div class="panel panel-default">
+                        <ul class="nav nav-tabs" role="tablist">
+                            <li class="active"><a href="#home" role="tab" data-toggle="tab"><i
+                                    class="fa fa-picture-o"></i>
+                                Photos</a>
+                            </li>
+                            <li class=""><a href="#profile" role="tab" data-toggle="tab"><i class="fa fa-folder"></i>
+                                Description</a>
+                            </li>
+                        </ul>
+                        <div class="tab-content">
+                            <div class="tab-pane fade active in" id="home">
+                                <img src="images/place1.jpg" alt="image"/>
+                                <img src="images/place2.jpg" alt="image"/>
+                                <img src="images/food1.jpg" alt="image"/>
+                                <img src="images/place1.jpg" alt="image"/>
+                                <img src="images/place2.jpg" alt="image"/>
+                                <img src="images/food1.jpg" alt="image"/>
+                            </div>
+                            <div class="tab-pane fade" id="profile">
+                                <p>{{ item.description }}</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="panel panel-default">
+                        <div class="panel-heading panel-heading-gray">
+                            <i class="fa fa-star"></i> Promotion(s)
+                        </div>
+                        <div class="panel-body">
+                            <div class="row">
+                                {% if item.discount %}
+                                    <div class="col-md-4">
+                                        <div class="panel panel-default">
+                                            <div class="panel-body">
+                                                <label class="btn btn-success btn-xs pull-right"
+                                                       title="Still in promotion."><i
+                                                        class="fa fa-check-circle"></i></label>
+                                                <label class="h5">Sales!</label>
+
+                                                <div class="text-muted" title="Start Date">
+                                                    <small><i class="fa fa-calendar"></i> 24/10/2014</small>
+                                                </div>
+                                            </div>
+
+                                            <div class="panel-body">
+                                                <ul class="icon-list block bordered">
+                                                    <li><i class="fa fa-calendar fa-fw"></i> Duration: <a href="#">1
+                                                        Week</a>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+                                {% else %}
+                                    <div class="col-md-4">No promotion nor discount at the moment.</div>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="panel panel-default">
+                        <div class="panel-heading panel-heading-gray">
+                            Select quantity and add to your bag here!
+                        </div>
+                        <div class="panel-body">
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <div class="panel-body">
+                                        <form method="post" action="" class="form-horizontal"
+                                              role="form">{% csrf_token %}
+                                            <div class="form-group">
+                                                Quantity: <select name="select" class="selectpicker"
+                                                                  data-style="btn-white">
+                                                <option>1</option>
+                                                <option>2</option>
+                                                <option>3</option>
+                                            </select>
+                                            </div>
+                                            <button class="btn btn-primary btn-stroke">ADD TO BAG</button>
+                                            <button class="btn btn-primary btn-stroke">
+                                                <i class="fa fa-fw fa-share"></i> Share
+                                            </button>
+
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+    {#        <div class="footer">Social Network Template &copy; Copyright Notice</div>#}
+
+{% endblock %}

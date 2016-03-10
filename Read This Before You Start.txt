@@ -1,0 +1,11 @@
+custom Css Style please use style.css
+custom JS Script please use site.js 
+
+sample filter
+CustomUser.objects.filter(__raw__={'$where': 'this.friends.length >= 2'})
+
+<<<<<<< HEAD
+abc
+=======
+123
+>>>>>>> f114fef6375cf301409681684f8f294605109a37

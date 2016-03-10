@@ -1,0 +1,52 @@
+{% extends "main.html" %}
+{% block title %}{{ template_title }}{% endblock %}
+{% block content %}
+<h1>{{ template_title }}</h1>
+<div class="panel panel-default text-center">
+    <form action="/activation/" method="post" >{% csrf_token %}
+    <div class="panel-body">
+        {% if is_already_active != None %}
+            <script type="text/javascript">
+                setTimeout(function() {
+                    window.location.href = "/";
+                }, 5000);
+            </script>
+            <error>{{ is_already_active }} <a href="/">here</a></error>
+        {% elif success != None %}
+            <script type="text/javascript">
+                setTimeout(function() {
+                    window.location.href = "/";
+                }, 5000);
+            </script>
+            <success>{{ success }} <a href="/">here</a></success>
+        {% elif is_expired != None%}
+            <script type="text/javascript">
+                setTimeout(function() {
+                    window.location.href = "/activation/";
+                }, 5000);
+            </script>
+            <error>{{ is_expired }}  <a href="/activation/">here</a></error>
+        {% elif found != None %}
+            {% block extrahead %}{{ block.super }}
+            <script type="text/javascript">
+                setTimeout(function() {
+                    window.location.href = "/activation/";
+                }, 5000);
+            </script>
+            {% endblock %}
+            <error>{{ found }} <a href="/activation/">here</a></error>
+        {% else %}
+            <h5 class="forgot-password">{{ message }}</h5>
+            {% for field in form %}
+            <div class="fieldWrapper">
+                {{ field }} {% for error in field.errors %}<error>{{ error|escape }}</error> {% endfor %}
+            </div>
+            {% endfor %}
+            <input type="submit" class="btn btn-primary" id="submit" value="Submit">
+            <input type="reset" class="btn btn-danger" id="reset" value="Reset">
+            <a href="/login/" class="forgot-password">Back to Login Page</a>
+        {% endif %}
+    </div>
+    </form>
+</div>
+{% endblock %}

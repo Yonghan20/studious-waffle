@@ -1,0 +1,47 @@
+{% load humanize %}
+{% load static from staticfiles %}
+<a href="#newsfeeds" id="newsfeeds-tag" data-toggle="collapse" title="News Feeds" {% if user.open_news_feeds == False %}class="collapsed"{% endif %}><i class="icon-bell-fill"></i> News Feeds</a>
+<ul class="collapse{% if user.open_news_feeds %} in{% endif %}" id="newsfeeds">
+    <li class="reset" style="height:220px; overflow-y: scroll;" data-scrollable>
+        <ul>
+            {% if following_user_log|length <= 0 %}
+                <li class="media news-item">
+                    Don't have any news yet....
+                    <span class="pull-left media-object">
+                    <i class="fa fa-fw fa-bell"></i>
+                    </span>
+                </li>
+            {% endif %}
+            {% for item in following_user_log %}
+                <li name="news-feeds" class="media news-item" data-id="{{ item.id }}"{% if item.seen|length <= 0 %} data-seen="0">
+                    <span class="news-item-success pull-right "><i id="news-circle" class="fa fa-circle"></i>{% else %}
+                        {% for item2 in item.seen %}
+                            {% if forloop.counter != item.seen|length %}
+                            {% if user != item2.user %}
+                                data-seen="0"><span class="news-item-success pull-right "><i id="news-circle" class="fa fa-circle"></i>
+                            {% else %}
+                                data-seen="1"><span class="news-item-success pull-right ">
+                            {% endif %}{% endif %}
+                        {% endfor %}{% endif %}</span>
+                    <span class="pull-left media-object">
+                    <i class="fa fa-fw fa-bell"></i>
+                    </span>
+                    <div class="media-body">
+                        <a href="/profile/{{ item.user.id }}" class="text-white">{{ item.user.display_name }}</a> {{ item.description }}
+                        {% if item.type == 6 or item.type == 5 or item.type == 4 %}
+                            <a href="/profile/{{ item.to_user.id }}" class="text-white">{% if item.to_user == item.user %} own
+                                {% elif item.to_user != user %}{{ item.to_user.display_name }}'s{% else %} your{% endif %}</a> <a href="/posts/{{ item.posts.id }}" class="text-white">post</a>
+                        {% elif item.type == 3 %}
+                            <a href="/profile/{{ item.to_user.id }}" class="text-white">{% if item.to_user != user %}{{ item.to_user.display_name }}{% else %} you{% endif %}</a>
+                        {% elif item.type == 2 %}
+                            <a href="/posts/{{ item.posts.id }}" class="text-white">post</a>
+                        {% elif item.type == 1 %}
+                            <a href="/profile/{{ item.to_user.id }}" class="text-white">{% if item.to_user != user %}{{ item.to_user.display_name }} {% else %} you{% endif %}</a> as follower
+                        {% endif %}.
+                        <span class="time">{{ item.created_date_time|naturaltime }}</span>
+                    </div>
+                </li>
+            {% endfor %}
+        </ul>
+    </li>
+</ul>

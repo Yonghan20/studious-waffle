@@ -1,0 +1,21 @@
+{% load static from staticfiles %}
+{% for item in user.following|dictsort:"user.online_status" %}
+    <li class="{% if item.user.online_status == 0 %}online
+              {% elif item.user.online_status == 1 %}online away
+              {% else %}offline{% endif %}" data-user-id="{{ forloop.counter }}">
+    <a href="/messages/?id={{ item.user.id }}">
+        <div class="media">
+            <div class="userStatus pull-right"><span class="status"></span></div>
+            <div class="pull-left">
+                <img src="{% static item.user.profile_image %}" width="40" class="img-circle" />
+            </div>
+            <div class="media-body">
+                <div class="contact-name">{{ item.user.display_name }}</div>
+                <small>{% if item.user.online_status == 0 %}Online
+              {% elif item.user.online_status == 1 %}Online Away
+              {% else %}Offline{% endif %}</small>
+            </div>
+        </div>
+    </a>
+</li>
+{% endfor %}

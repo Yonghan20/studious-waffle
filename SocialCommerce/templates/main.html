@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <title>{% block title %}{{ template_title }}{% endblock %}</title>
+    {% load static from staticfiles %}
+    <link rel="icon" href="{% static  "images/logo19.png"%}" type="image/x-icon"/>
+
+    <!-- App Styling Bundle -->
+    <link href="{% static "css/blue.min.css"%}" rel="stylesheet">
+    <link href="{% static "css/purple.min.css"%}" rel="stylesheet">
+    <link href="{% static "css/brown.min.css"%}" rel="stylesheet">
+    <link href="{% static "css/orange.min.css"%}" rel="stylesheet">
+    <link href="{% static "css/default.min.css"%}" rel="stylesheet">
+    <link href="{% static "css/_vendor.min.css"%}" rel="stylesheet">
+    <link href="{% static "css/_vendor.bundle.css"%}" rel="stylesheet">
+    <link href="{% static "css/style.css"%}" rel="stylesheet">
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+
+<!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+<!--[if lt IE 9]><script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+    <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+</head>
+    <body class="login">
+        <div id="content">
+            <div class="container-fluid">
+                <div class="lock-container">
+                    {% block content %}
+                    {% endblock %}
+                </div>
+            </div>
+        </div>
+    </body>
+    <!-- Custom Script -->
+    <script src="{% static "js/jquery-1.11.3.min.js"%}"></script>
+    <script src="{% static "js/main.js"%}"></script>
+
+    <!-- Vendor Scripts Bundle -->
+    <script src="{% static "js/vendor.min.js"%}"></script>
+
+    <!-- App Scripts Bundle -->
+    <script src="{% static "js/scripts.min.js"%}"></script>
+</body>
+</html>

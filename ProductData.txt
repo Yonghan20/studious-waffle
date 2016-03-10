@@ -1,0 +1,68 @@
+{
+    "_id" : ObjectId("56d144348df0554f85646d0a"),
+    "name" : "Converse AllStar",
+    "category" : "shoes",
+    "gender" : "f",
+    "price" : "3,081.00",
+    "description" : "Proident ea id proident officia est tempor enim duis consectetur commodo quis. Elit exercitation dolor tempor deserunt eiusmod sunt nisi sint. Fugiat excepteur culpa quis ex adipisicing amet laboris nulla ex ut mollit et.\r\n",
+    "status" : "Available",
+    "image" : "images/product/sampleshoes.jpg",
+    "create_date": ISODate("2016-02-20T14:25:36.022Z"),
+    "discount" : "10%",
+    "seller" : ObjectId("56c01d6a0647512300d490d8")
+}
+
+{
+    "_id" : ObjectId("56d457f3fe396db63773cc08"),
+    "name" : "Converse AllStar",
+    "category" : "shoes",
+    "gender" : "u",
+    "price" : "3,081.00",
+    "description" : "Proident ea id proident officia est tempor enim duis consectetur commodo quis. Elit exercitation dolor tempor deserunt eiusmod sunt nisi sint. Fugiat excepteur culpa quis ex adipisicing amet laboris nulla ex ut mollit et.\r\n",
+    "status" : "Available",
+    "image" : "images/product/sampleshoes.jpg",
+    "create_date": ISODate("2016-03-01T14:25:36.022Z"),
+    "discount" : "20%",
+    "seller" : ObjectId("56c01d6a0647512300d490d8")
+}
+
+
+{
+    "_id" : ObjectId("56d457f4fe396db63773cc09"),
+    "name" : "Converse AllStar",
+    "category" : "shoes",
+    "gender" : "m",
+    "price" : "100.99",
+    "description" : "Proident ea id proident officia est tempor enim duis consectetur commodo quis. Elit exercitation dolor tempor deserunt eiusmod sunt nisi sint. Fugiat excepteur culpa quis ex adipisicing amet laboris nulla ex ut mollit et.\r\n",
+    "status" : "Available",
+    "image" : "images/product/sampleshoes.jpg",
+    "create_date": ISODate("2016-02-20T14:25:36.022Z"),
+    "discount" : "15%"
+}
+
+
+{
+    "_id" : ObjectId("56d457f4fe396db63773cc0a"),
+    "name" : "Converse AllStar",
+    "category" : "shoes",
+    "gender" : "f",
+    "price" : "3,081.00",
+    "description" : "Proident ea id proident officia est tempor enim duis consectetur commodo quis. Elit exercitation dolor tempor deserunt eiusmod sunt nisi sint. Fugiat excepteur culpa quis ex adipisicing amet laboris nulla ex ut mollit et.\r\n",
+    "status" : "Available",
+    "image" : "images/product/sampleshoes.jpg",
+    "create_date": ISODate("2016-01-20T14:25:36.022Z")
+}
+
+
+{
+    "_id" : ObjectId("56d457f4fe396db63773cc0b"),
+    "name" : "Converse AllStar",
+    "category" : "shoes",
+    "gender" : "f",
+    "price" : "205.00",
+    "description" : "Proident ea id proident officia est tempor enim duis consectetur commodo quis. Elit exercitation dolor tempor deserunt eiusmod sunt nisi sint. Fugiat excepteur culpa quis ex adipisicing amet laboris nulla ex ut mollit et.\r\n",
+    "status" : "Unavailable",
+    "image" : "images/product/sampleshoes.jpg",
+    "create_date": ISODate("2016-01-20T14:25:36.022Z"),
+    "seller" : ObjectId("56c01de006475118cc9262db")
+}

@@ -1,0 +1,299 @@
+{% extends "base.html" %}
+{% block title %}{{ template_title }}{% endblock %}
+{% load static from staticfiles %}
+{% block content %}
+
+    <style>
+        .black_overlay {
+            display: none;
+            position: fixed;
+            top: 0%;
+            left: 0%;
+            width: 100%;
+            height: 100%;
+            background-color: black;
+            z-index: 1001;
+            opacity: 0.6;
+            filter: alpha(opacity=80);
+        }
+
+        .white_content {
+            display: none;
+            position: fixed;
+            width: 100%;
+            padding-left: 16px;
+            z-index: 1002;
+            overflow: auto;
+        }
+
+        .popover-title {
+            text-decoration: none !important;
+        }
+    </style>
+    <div id="fade" class="black_overlay"></div>
+    <div id="edit_product" class="container-fluid white_content">
+        <div class="row">
+            <div class="col-md-6">
+                <div class="panel panel-default"><a class="close" href="#"
+                                                    onclick="document.getElementById('edit_product').style.display='none';document.getElementById('fade').style.display='none'">×</a>
+
+                    <div class="panel-heading panel-heading-gray">Add / Edit Product</div>
+
+                    <div class="panel-body">
+                        <form id="addOrEdit" class="form-horizontal" role="form" action="/sellingList/"
+                              method="POST">{% csrf_token %}
+
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label">Product Name</label>
+
+                                <div class="col-sm-9">
+                                    <input id="productName" type="text" class="form-control"
+                                           placeholder="Product Display Name" required>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label">Description</label>
+
+                                <div class="col-sm-9">
+                                    <textarea id="productDesc" class="form-control" rows="5" maxlength="400"></textarea>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label">Gender</label>
+
+                                <div id="productGender" class="col-sm-9">
+                                    <label class="radio-inline">
+                                        <input type="radio" name="inlineRadioOptions"
+                                               id="inlineRadio1" value="m">
+                                        Male
+                                    </label>
+                                    <label class="radio-inline">
+                                        <input type="radio" name="inlineRadioOptions"
+                                               id="inlineRadio2" value="f">
+                                        Female
+                                    </label>
+                                    <label class="radio-inline">
+                                        <input type="radio" name="inlineRadioOptions"
+                                               id="inlineRadio2" value="u">
+                                        Unisex
+                                    </label>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label">Category</label>
+
+                                <div class="col-sm-9">
+                                    <select id="productCategory" class="selectpicker" data-style="btn-white"
+                                            data-live-search="true">
+                                        <option data-hidden="true">Choose one of the following...</option>
+                                        {% for item in category %}
+                                            <option>{{ item.shoes }}</option>
+                                            <option>{{ item.clothing }}</option>
+                                            <option>{{ item.accessory }}</option>
+                                            <option>{{ item.bag }}</option>
+                                            <option>{{ item.sport }}</option>
+                                            <option>{{ item.watch }}</option>
+                                        {% endfor %}
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label">Tag(s)</label>
+
+                                <div class="col-sm-9">
+                                    <select id="productTag" class="selectpicker" multiple data-style="btn-white"
+                                            title='Choose one of the following...' data-live-search="true"
+                                            data-size="5">
+                                        <option>Sneaker</option>
+                                        <option>White</option>
+                                        <option>Brand</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label">Product Image</label>
+
+                                <div class="col-sm-9">
+                                    <div class="input-group">
+                                        <input id="productImage" type="file" class="form-control">
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label">Price</label>
+
+                                <div class="col-sm-9">
+                                    <input id="productPrice" type="number" class="form-control" placeholder="Price"
+                                           min="0" required>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <div class="col-sm-offset-3 col-sm-9">
+                                    <button id="add-product" class="btn btn-success"><i class="fa fa-check-circle"></i>
+                                        Done
+                                    </button>
+                                    <a id="cancelProduct" class="btn btn-danger"
+                                       onclick="document.getElementById('edit_product').style.display='none';document.getElementById('fade').style.display='none'">
+                                        <i class="fa fa-times"></i> Cancel
+                                    </a>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="container-fluid">
+        <h1>Selling List</h1>
+
+        <div class="panel panel-default">
+            <div class="panel-heading panel-heading-gray">
+                {#                <a href="#edit_product" style="text-decoration: none !important; color: #fff !important;">#}
+                <button id="addProduct" class="btn btn-primary" data-toggle="tooltip" data-placement="top"
+                        title="Add an item for sale!"
+                        onclick="document.getElementById('edit_product').style.display='block';document.getElementById('fade').style.display='block'">
+                    <i class="fa fa-plus"></i> Add
+                </button>
+                {#                </a>#}
+                <button class="btn btn-default pull-right" data-toggle="tooltip" data-placement="top"
+                        title="Credit left to add item.">
+                    Remaining Credit:
+                    {% if user.credit %}
+                        {{ user.credit }}
+                    {% else %}
+                        Unlimited
+                    {% endif %}
+                </button>
+            </div>
+
+            <!-- Selling list table -->
+            <div class="table-responsive">
+
+                <table class="table v-middle">
+                    <thead>
+                    <tr>
+                        {#                    <th width="20">#}
+                        {#                        <input type="checkbox" name="checkbox" id="checkAll"/>#}
+                        {#                    </th>#}
+                        <th width="30">Date</th>
+                        <th>Product Name</th>
+                        <th width="30">Category</th>
+                        <th width="20">Gender</th>
+                        <th>Description</th>
+                        <th>Price</th>
+                        <th>Status</th>
+                        <th class="text-right">Action</th>
+                    </tr>
+                    </thead>
+
+                    <tbody>
+                    {% if product|length <= 0 %}
+                        <tr>
+                            <td colspan="8"><span>No item(s) at the moment.</span></td>
+                        </tr>
+                    {% else %}
+                        {% for item in product %}
+                            <tr>
+                                {#                        <td>#}
+                                {#                            <input type="checkbox"/>#}
+                                {#                        </td>#}
+                                <td>
+                                    <span class="label label-gray">{{ item.create_date }}</span>
+                                </td>
+                                <td>
+                                    <img src="{% static item.image %}" width="40" class="img-circle"/> {{ item.name }}
+                                </td>
+                                <td>
+                                    {{ item.category }}
+                                </td>
+                                <td style="width: 15px;">
+                                    {% if item.gender == 'u' %}
+                                        {{ radio }}
+                                        <i class="fa fa-fw fa-male" data-toggle="tooltip" data-placement="top"
+                                           title="Male"></i>
+                                        {{ radio }}
+                                        <i class="fa fa-fw fa-female" data-toggle="tooltip" data-placement="top"
+                                           title="Female"></i>
+                                    {% elif item.gender == 'f' %}
+                                        {{ radio }}
+                                        <i class="fa fa-fw fa-female" data-toggle="tooltip" data-placement="top"
+                                           title="Female"></i>
+                                    {% else %}
+                                        {{ radio }}
+                                        <i class="fa fa-fw fa-male" data-toggle="tooltip" data-placement="top"
+                                           title="Male"></i>
+                                    {% endif %}
+                                </td>
+                                <td style="width: 30%;" data-toggle="tooltip" data-placement="top"
+                                    title="{{ item.description }}">
+                                    <div>{{ item.description }}</div>
+                                </td>
+                                <td>
+                                    {{ item.price }}
+                                </td>
+                                <td>
+                                    <div class="btn-group">
+                                        {{ item.status }}
+                                        {#                                <select id="productStatus" class="btn btn-default">#}
+                                        {#                                    <option>{{ item.status }}</option>#}
+                                        {#                                    {% if item.status == 'Available' or item.status == 'available' %}#}
+                                        {#                                        <option>Unavailable</option>#}
+                                        {#                                    {% else %}#}
+                                        {#                                        <option>Available</option>#}
+                                        {#                                    {% endif %}#}
+                                        {#                                </select>#}
+                                    </div>
+                                </td>
+                                <td class="text-right">
+                                    <button id="updateProduct" class="btn btn-default btn-xs" data-toggle="tooltip"
+                                            data-placement="top"
+                                            title="Edit" value="{{ item.id }}" onclick="updateProduct()"><i
+                                            class="fa fa-pencil"></i></button>
+                                    <a tabindex="0" class="btn btn-danger btn-xs" data-html="true" data-placement="left"
+                                       role="button"
+                                       data-toggle="popover" title="Are you sure to proceed?" data-trigger="focus"
+                                       data-content="<a href='/removeProduct/?pid={{ item.id }}' id='removeProduct'
+                                                     class='btn btn-danger'>Confirm</a> <a href='#' class='btn btn-default'>Cancel</a>">
+                                        <i class="fa fa-times"></i></a>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    {% endif %}
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- // Progress table -->
+            <div class="panel-footer padding-none text-center">
+                <ul class="pagination">
+                    <li><a href="#">&laquo;</a>
+                    </li>
+                    <li class="active"><a href="#">1</a>
+                    </li>
+                    <li><a href="#">2</a>
+                    </li>
+                    <li><a href="#">3</a>
+                    </li>
+                    <li><a href="#">4</a>
+                    </li>
+                    <li><a href="#">5</a>
+                    </li>
+                    <li><a href="#">&raquo;</a>
+                    </li>
+                </ul>
+            </div>
+
+        </div>
+
+    </div>
+    {#    <div class="footer">Social Network Template &copy; Copyright Notice</div>#}
+{% endblock %}

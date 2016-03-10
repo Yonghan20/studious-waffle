@@ -1,0 +1,33 @@
+//first code
+                            {% if item in has_mutual %}
+                            <div class="panel-body bordered">
+                            <p class="common-friends">Common Friends <a href="/commonfriends/{{ item.user.id }}">View All</a></p>
+                            <div class="user-friend-list">
+                            {% for item2 in item.user.following|slice:":5"|dictsort:"user.display_name" %}
+                                {% for item3 in user.following %}
+                                    {% if item2.user == item3.user%}
+                                        <a href="/profile/{{ item2.user.id }}">
+                                            <img src="{% static item2.user.profile_image%}" alt="people" class="img-circle" id="common-friends"/>
+                                        </a>
+                                    {% endif %}
+                                {% endfor %}
+                            {% endfor %}
+
+                            </div>
+                            </div>
+                            {% endif %}
+
+
+
+
+//second code
+
+    #region mutual following with user
+    for item in user.following:
+        for item2 in item.user.following:
+            for item3 in user.following:
+                if item2.user == item3.user:
+                        has_mutual.append(item)
+    #endregion
+
+    {% if item in has_mutual %}<a href="/mutual/{{ item.user.id }}" title="View Mutual">View Mutual</a>{% endif %}

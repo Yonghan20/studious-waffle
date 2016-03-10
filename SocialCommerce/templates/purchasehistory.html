@@ -1,0 +1,53 @@
+{% extends "base.html" %}
+{% block title %}{{ template_title }}{% endblock %}
+{% load static from staticfiles %}
+{% block content %}
+    <div class="container-fluid">
+        <h1>Purchase History</h1>
+
+        <div class="panel panel-default">
+
+            <!-- Data table -->
+            <table id="data-table" class="table" cellspacing="0" width="100%">
+                <thead>
+                <tr>
+                    <th>Purchase Date</th>
+                    <th>Item Name</th>
+                    <th>Category</th>
+                    <th>Quantity</th>
+                    <th>Price (each)</th>
+                </tr>
+                </thead>
+                <tfoot>
+                <tr>
+                    <th>Purchase Date</th>
+                    <th>Item Name</th>
+                    <th>Category</th>
+                    <th>Quantity</th>
+                    <th>Price (each)</th>
+                </tr>
+                </tfoot>
+                <tbody>
+{#                {% if purchase_history|length == 0 %}#}
+{#                    <tr>#}
+{#                        <td colspan="5">No purchase history found.</td>#}
+{#                    </tr>#}
+{#                {% else %}#}
+                    {% for item in purchase_history %}
+                        <tr>
+                                                        <td>{{ item.purchase_date }}</td>
+{#                                                        <td>{{ item.product.name }}</td>#}
+{#                                                        <td>{{ item.product.category }}</td>#}
+{#                                                        <td>{{ item.quantity }}</td>#}
+{#                                                        <td>{{ item.product.price }}</td>#}
+                        </tr>
+                    {% endfor %}
+{#                {% endif %}#}
+                </tbody>
+            </table>
+
+            <!-- // Data table -->
+        </div>
+    </div>
+    {#    <div class="footer">Social Network Template &copy; Copyright Notice</div>#}
+{% endblock %}
